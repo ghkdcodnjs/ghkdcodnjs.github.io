@@ -1,0 +1,94 @@
+@font-face {
+  font-family: "Noto Sans KR";
+  src: url("../fonts/Noto_Sans_KR/NotoSansKR-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* 공통 무대 — 시안의 1920 × 1080 좌표를 너비에 비례해 축소 */
+* { box-sizing: border-box; }
+html { background: #141414; color-scheme: dark; }
+body { margin: 0; background: #141414; color: white; font-family: "Noto Sans KR", sans-serif; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+[hidden] { display: none !important; }
+main { max-width: 1280px; margin-inline: auto; }
+.chapter { position: relative; }
+.viewport { height: 100svh; display: grid; place-items: center; }
+.stage { width: min(100%, 177.77778svh); aspect-ratio: 16 / 9; position: relative; overflow: hidden; container-type: inline-size; }
+.frame { position: absolute; inset: 0; overflow: hidden; isolation: isolate; }
+.placed, .copy { position: absolute; margin: 0; }
+.artwork { display: block; user-select: none; pointer-events: none; }
+.copy { font-size: var(--type); font-weight: 500; line-height: 1.45; white-space: pre; pointer-events: none; }
+.size-48, .size-60 { font-weight: 650; }
+.panel, .hint-band { border: max(.5px, .085cqw) solid #676767; background: rgba(38,38,38,.93); pointer-events: none; }
+.hint-band { background: rgba(38,38,38,.86); }
+.hotspot, .map-pin, .garment-hit, .eco-hit, .role-hit, .arrow { background: transparent; border: 0; padding: 0; }
+.overlay-hint { pointer-events: none; transition: opacity .18s ease; }
+.hint-dismissed .overlay-hint { opacity: 0; }
+.pill { border: max(.6px,.085cqw) solid #888; border-radius: 4cqw; background: transparent; font-weight: 500; font-size: 1.25cqw; }
+.pill:is(:hover,:focus-visible,:active) { background: #fff; color: #262524; border-color: #ff4d45; box-shadow: 0 0 .65cqw #fc302d; }
+
+/* 우주와 아타카마 도입부 */
+.scroll-story { height: 800svh; }
+.scroll-story .viewport, .question-story .viewport { position: sticky; top: 0; }
+.glow { filter: drop-shadow(0 0 .9cqw #ff2525); }
+.desert-focus { background: radial-gradient(ellipse, #fa343b3d, transparent 68%); }
+
+/* 옷장 질문과 지도 */
+.question-story { height: 100svh; }
+.question-story.answered { height: 500svh; }
+.map-pin { z-index: 1; border-radius: 50%; }
+.map-pin::after { content: ""; position: absolute; inset: 31%; background: white; border: .14cqw solid #f43839; border-radius: 50%; box-shadow: 0 0 .7cqw .19cqw #ef1717; }
+.map-pin:is(:hover,:focus-visible)::after { transform: scale(1.45); }
+#world .panel, #world .panel ~ .artwork, #world .copy, #world .overlay-hint { z-index: 2; }
+#world .panel { pointer-events: auto; }
+
+/* 옷장 선택과 의류 정보 */
+.dim { opacity: .1; }
+.outline { border: max(.5px,.08cqw) solid #888; pointer-events: none; }
+.rule { background: #777; }
+.arrow::after { content: ""; display: block; width: 1.6cqw; height: 1.6cqw; margin: auto; border-top: .14cqw solid white; border-right: .14cqw solid white; transform: rotate(45deg); }
+.arrow.back::after { transform: rotate(-135deg); }
+#wardrobe .frame:has(.garment-hit:is(:hover,:focus-visible)) > .artwork { opacity: .22; }
+.garment-hit:is(:hover,:focus-visible) { background-image: url("../images/4-2_closet_open.png"); background-size: var(--closet-size); background-position: var(--closet-position); filter: drop-shadow(0 0 .4cqw red); }
+
+/* 구매 입력과 세로로 이어지는 영수증 */
+.quantity { display: flex; align-items: baseline; gap: .45cqw; font-size: 1.875cqw; font-weight: 500; }
+.quantity input { min-width: 0; flex: 1; text-align: center; appearance: textfield; background: transparent; border: 0; border-bottom: .08cqw solid #aaa; padding: 0; border-radius: 0; }
+.quantity input::-webkit-inner-spin-button { appearance: none; }
+#receipt { position: relative; container-type: inline-size; padding-block: 7.13% 3%; }
+.receipt-paper { position: relative; width: 61.714%; margin: auto; }
+.receipt-paper > img { display: block; width: 100%; }
+.receipt-numbers output { position: absolute; transform: translate(-50%,-50%); color: #101010; font-weight: 900; font-size: 2.35cqw; white-space: nowrap; }
+.receipt-numbers .sum { transform: translate(-100%,-50%); font-size: 3.125cqw; }
+.receipt-caption { position: absolute; top: 0; width: 100%; aspect-ratio: 16/9; pointer-events: none; transition: opacity .2s; }
+.receipt-caption .copy { z-index: 1; }
+
+/* 생태계와 사회 주체 */
+.dim-screen { background: #141414e3; }
+.eco-hit span { position: absolute; left: 104%; top: 37%; width: max-content; color: white; font-size: 3.125cqw; font-weight: 650; opacity: 0; }
+.eco-hit:is(:hover,:focus-visible) span { opacity: 1; }
+.eco-hit:is(:hover,:focus-visible) { filter: drop-shadow(0 0 .5cqw red); }
+#solutions .frame:has(.role-hit:nth-of-type(1):is(:hover,:focus-visible)) > img:nth-of-type(1),
+#solutions .frame:has(.role-hit:nth-of-type(2):is(:hover,:focus-visible)) > img:nth-of-type(2),
+#solutions .frame:has(.role-hit:nth-of-type(3):is(:hover,:focus-visible)) > img:nth-of-type(3) { filter: drop-shadow(0 0 1cqw #ed1616); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
+
+/* 시안의 강조 굵기와 그림·설명을 잇는 지시선 */
+#intro .copy { font-weight: 650; }
+#question .size-48, #purchases .size-48 { font-weight: 500; }
+.size-60 { font-weight: 750; }
+#ecosystem .size-24, #solutions .size-24, #world .size-18 { font-weight: 400; }
+.callout-line { pointer-events: none; }
+.callout-line::before, .callout-line::after { content: ""; position: absolute; top: 0; height: max(.5px,.064cqw); background: #aaa; }
+.callout-line::before { right: 0; width: 55%; }
+.callout-line::after { right: 55%; width: 64%; transform-origin: right center; transform: rotate(-45deg); }
+.eco-hit:is(:hover,:focus-visible) { background-size: contain; background-repeat: no-repeat; background-position: center; }
+.eco-layer-0:is(:hover,:focus-visible) { background-image: url("../images/6-1_air.png"); }
+.eco-layer-1:is(:hover,:focus-visible) { background-image: url("../images/6-2_soil.png"); }
+.eco-layer-2:is(:hover,:focus-visible) { background-image: url("../images/6-3_ocean.png"); }
+#ecosystem .frame:has(.eco-hit:is(:hover,:focus-visible)) > .artwork { opacity: .13; }
