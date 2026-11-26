@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Noto Sans KR";
-  src: url("../fonts/Noto_Sans_KR/NotoSansKR-VariableFont_wght.ttf") format("truetype");
+  src: url("fonts/Noto_Sans_KR/NotoSansKR-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-display: swap;
 }
@@ -52,7 +52,6 @@ main { max-width: 1280px; margin-inline: auto; }
 .arrow::after { content: ""; display: block; width: 1.6cqw; height: 1.6cqw; margin: auto; border-top: .14cqw solid white; border-right: .14cqw solid white; transform: rotate(45deg); }
 .arrow.back::after { transform: rotate(-135deg); }
 #wardrobe .frame:has(.garment-hit:is(:hover,:focus-visible)) > .artwork { opacity: .22; }
-.garment-hit:is(:hover,:focus-visible) { background-image: url("../images/4-2_closet_open.png"); background-size: var(--closet-size); background-position: var(--closet-position); filter: drop-shadow(0 0 .4cqw red); }
 
 /* 구매 입력과 세로로 이어지는 영수증 */
 .quantity { display: flex; align-items: baseline; gap: .45cqw; font-size: 1.875cqw; font-weight: 500; }
@@ -88,7 +87,60 @@ main { max-width: 1280px; margin-inline: auto; }
 .callout-line::before { right: 0; width: 55%; }
 .callout-line::after { right: 55%; width: 64%; transform-origin: right center; transform: rotate(-45deg); }
 .eco-hit:is(:hover,:focus-visible) { background-size: contain; background-repeat: no-repeat; background-position: center; }
-.eco-layer-0:is(:hover,:focus-visible) { background-image: url("../images/6-1_air.png"); }
-.eco-layer-1:is(:hover,:focus-visible) { background-image: url("../images/6-2_soil.png"); }
-.eco-layer-2:is(:hover,:focus-visible) { background-image: url("../images/6-3_ocean.png"); }
+.eco-layer-0:is(:hover,:focus-visible) { background-image: url("images/6-1_air.png"); }
+.eco-layer-1:is(:hover,:focus-visible) { background-image: url("images/6-2_soil.png"); }
+.eco-layer-2:is(:hover,:focus-visible) { background-image: url("images/6-3_ocean.png"); }
 #ecosystem .frame:has(.eco-hit:is(:hover,:focus-visible)) > .artwork { opacity: .13; }
+
+/* 공통 안내문 및 모션 설정 */
+:root { --ease: cubic-bezier(.45,0,.25,1); --panel-time: 1050ms; --hover-delay: 2s; }
+.overlay-hint { position:absolute; inset:50% 0 auto; transform:translateY(-50%); height:var(--hint-height,88px); z-index:8!important; display:grid; place-items:center; padding:0 5%; background:#262626f2; border:1px solid #555; pointer-events:auto; transition:opacity .55s var(--ease); }
+.overlay-hint p { margin:0; max-width:72ch; text-align:center; font-size:clamp(12px,1.25cqw,17px); line-height:1.55; word-break:keep-all; }
+.overlay-hint.dismissed { opacity:0; pointer-events:none; }
+.map-pin::after,.role-hit + img,#solutions .artwork,#ecosystem .artwork,#wardrobe .artwork,.eco-hit span { transition:opacity .7s var(--ease),filter .7s var(--ease),transform .7s var(--ease); }
+
+/* S1 — 사진은 고정 크기, 지구만 확대 */
+#intro { width:100vw; margin-left:calc(50% - 50vw); height:850svh; }
+#intro .stage { width:100%; height:100%; aspect-ratio:auto; }
+.intro-scene { background:center/cover url("images/1-0_space.png"); }
+.earth-layout { position:absolute; width:min(100%,177.7778svh,1280px); aspect-ratio:16/9; left:50%; top:50%; transform:translate(-50%,-50%); }
+.earth { position:absolute; left:30.4688%; top:22.2222%; width:39.5312%; height:65%; }
+.earth-caption,.desert-caption { position:absolute; margin:0; text-align:center; font-weight:650; }
+.earth-caption { left:5%; right:5%; bottom:calc(50% + min(18vw,32svh,230px)); font-size:clamp(13px,1.65vw,22px); }
+.desert { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; }
+.alert-location { position:absolute; left:var(--alert-x,35%); top:var(--alert-y,20%); width:14%; height:20%; transform:translate(-50%,-50%); }
+.alert-location::after { content:""; display:block; height:100%; border-radius:50%; background:radial-gradient(ellipse,#ff2c2d99,transparent 68%); animation:alert-flash 1.7s ease-in-out infinite alternate; }
+@keyframes alert-flash { from{opacity:.18} to{opacity:1} }
+.desert-caption { right:6.8%; bottom:15%; width:min(37%,550px); padding:1.5% 2%; background:#262626ec; border:1px solid #666; font-size:clamp(14px,1.65vw,25px); line-height:1.5; word-break:keep-all; opacity:0; }
+@media(max-width:650px){ .desert-caption { width:84%; right:8%; padding:16px; } }
+
+/* S2 */
+#question .pill { transition:background-color .55s var(--ease),color .55s var(--ease),box-shadow .55s var(--ease),border-color .55s var(--ease); }
+[data-view="question"] .pill:hover { transition-delay:var(--hover-delay); }
+/* S3 */
+.panel-content { position:absolute; inset:0; z-index:2; pointer-events:none; }
+.panel-content .panel { pointer-events:auto; }
+.frame:not([hidden]) .panel-content { animation:panel-scan var(--panel-time) var(--ease) both; }
+@keyframes panel-scan { from{opacity:0;clip-path:inset(0 0 100% 0);transform:translateY(-8px)} to{opacity:1;clip-path:inset(0);transform:none} }
+.map-connector { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.map-divider { position:absolute; width:max(.5px,.085cqw); background:white; }
+/* S4 */
+.garment-hit img,.eco-hit img { display:block; width:100%;height:100%;pointer-events:none;transition:opacity .75s var(--ease),filter .75s var(--ease); }
+.garment-hit img { opacity:.35; }
+.garment-hit:is(:hover,:focus-visible) img,.eco-hit:is(:hover,:focus-visible) img { opacity:1; filter:drop-shadow(0 0 .35cqw #e83434); }
+/* S5 */
+.receipt-caption { top:min(50svh,28.125cqw); height:0; }
+.receipt-caption .overlay-hint { pointer-events:auto; }
+.receipt-caption .dismissed { pointer-events:none; }
+.receipt-numbers output { font-family:"Noto Sans KR",sans-serif; }
+#receipt:not([hidden]) .receipt-paper { animation:print-receipt .85s var(--ease); }
+@keyframes print-receipt { from{opacity:0; transform:translateY(22px) scale(.96)} }
+/* S6–S7 */
+.eco-hit img { opacity:0; }
+#ecosystem .callout-line::before,#ecosystem .callout-line::after { display:none; }
+#ecosystem .callout-line { background:#aaa;clip-path:polygon(0 99%,45% 0,100% 0,100% 2%,45% 2%,0 100%); }
+[data-view="ecosystem:0"] .callout-line { transform:scaleY(-1); }
+#solutions img:has(+ .role-hit:is(:hover,:focus-visible)) { filter:drop-shadow(0 0 .8cqw red); }
+@media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;} }
+#question .pill[aria-pressed="true"] { background:#fff;color:#262524; }
+@media(max-width:650px){ .satellite { object-position:34% center; } }
